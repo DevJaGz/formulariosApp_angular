@@ -1,0 +1,91 @@
+<h2>Template: Básicos</h2>
+
+<hr>
+
+
+<div class="row">
+   <div class="col">
+      <form (ngSubmit)="guardar(miFormulario)" #miFormulario="ngForm" autocomplete="off">
+
+         <!-- Producto -->
+         <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Producto</label>
+            <div class="col-sm-9">
+               <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Nombre del producto"
+                      [ngModel]="initForm.producto"
+                      name="producto"
+                      required minlength="3">
+
+               <span *ngIf="showWarning('producto')"
+                     class="form-text text-danger">
+                  Debe de ser de 3 letras
+               </span>
+
+            </div>
+         </div>
+         <!-- Precio -->
+         <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Precio</label>
+            <div class="col-sm-9">
+               <input type="number" class="form-control" placeholder="Precio del producto" [ngModel]="initForm.precio"
+                      name="precio"
+                      required>
+               <span *ngIf="showWarning('precio')"
+                     class="form-text text-danger">
+                  Debe ingresar un precio mayor o igual a cero
+               </span>
+            </div>
+         </div>
+         <!-- Existencias -->
+         <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Existencias</label>
+            <div class="col-sm-9">
+               <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Existencias del producto"
+                      [ngModel]="initForm.existencias"
+                      name="existencias"
+                      customMin
+                      [minimo]="0"
+                      required>
+               <span
+                     *ngIf="miFormulario.controls.existencias?.errors !== null && 
+                      miFormulario.controls.existencias?.touched"
+                     class="form-text text-danger">
+                  Debe ingresar una existencia mayor o igual a cero
+               </span>
+            </div>
+
+         </div>
+         <!-- Botón Guardar -->
+         <div class="row">
+            <div class="col">
+               <button
+                       [disabled]="miFormulario.invalid"
+                       type="submit" class="btn btn-primary float-end">Guardar</button>
+            </div>
+         </div>
+
+      </form>
+   </div>
+</div>
+
+<div class="row">
+   <div class="col">
+      <span>Valid:</span>
+      <pre>{{miFormulario.valid }}</pre>
+      <span>Value:</span>
+      <pre>{{miFormulario.value | json }}</pre>
+      <span>Pristine <small>(Formulario no se tocado desde que se presento al usuario)</small>:</span>
+      <pre>{{miFormulario.pristine }}</pre>
+      <span>Touched: <small>(Formulario se toco en 'flanco descendente')</small></span>
+      <pre>{{miFormulario.touched  }}</pre>
+      <span>CustomDirective: <small>(Directiva creada para generar error en el formulario cuando el campo sea menor a
+            0)</small></span>
+      <pre>{{ miFormulario.controls.existencias?.errors | json  }}</pre>
+   </div>
+</div>

@@ -1,0 +1,86 @@
+<h2>Template: <small>Dinámicos</small></h2>
+<hr>
+
+
+<form #formulario="ngForm" autocomplete="off" (keydown.enter)="$event.preventDefault()">
+   <!-- Nombre -->
+   <div class="mb-3 row">
+      <label class="col-sm-3 col-form-label" for="">Nombre</label>
+      <div class="col-sm-9">
+         <input
+                type="text" class="form-control"
+                placeholder="Nombre de la persona"
+                [ngModel]="persona.nombre"
+                name="nombre"
+                required>
+         <span *ngIf="showWarning('nombre')"
+               class="form-text text-danger ms-2">
+            El nombre es obligatorio
+         </span>
+      </div>
+   </div>
+
+   <!-- Agregar favorito -->
+   <div class="mb-3 row">
+      <label class="col-sm-3 col-form-label" for="">Agregar</label>
+      <div class="col-sm-9">
+         <div class="input-group">
+            <input
+                   (keyup.enter)="agregar()"
+                   type="text" class="form-control"
+                   placeholder="Agregar favorito"
+                   [(ngModel)]="nuevoJuego"
+                   name="nuevoJuego">
+            <button
+                    (click)="agregar()"
+                    class="btn btn-outline-primary"
+                    type="button">Agregar</button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Lista de juegos favoritos -->
+   <div class="mb-3 row" *ngIf="persona.favoritos.length > 0">
+      <label class="col-sm-3 col-form-label" for="">Favoritos</label>
+      <div class="col-sm-9">
+         <div *ngFor="let juego of persona.favoritos; let i=index">
+            <div class="input-group  mb-1">
+               <input
+                      [(ngModel)]="juego.nombre"
+                      name="favorito_{{i}}"
+                      class="form-control"
+                      required>
+               <button
+                       (click)="eliminar(i)"
+                       class="btn btn-outline-danger"
+                       type="button">Eliminar</button>
+            </div>
+            <span *ngIf="showWarningFavoritos('favorito_'+ i)"
+                  class="form-text text-danger ms-2">
+               Este campo no puede estar vacio
+            </span>
+         </div>
+      </div>
+   </div>
+
+   <div class="mb-3 row" *ngIf="persona.favoritos.length === 0">
+      <span class="form-text text-danger ms-2">
+         Debe agregar por lo menos un juego favorito
+      </span>
+   </div>
+
+   <div class="mb-3 row">
+      <div class="col-sm-12">
+         <button
+                 [disabled]="formulario.invalid || persona.favoritos.length === 0"
+                 (click)="guardar()"
+                 type="submit"
+                 class="btn btn-primary float-end">Guardar</button>
+      </div>
+   </div>
+
+</form>
+
+
+<span>Persona</span>
+<pre>   {{ persona | json}} </pre>
